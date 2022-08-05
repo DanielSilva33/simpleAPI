@@ -2,6 +2,7 @@ import { compare } from "bcryptjs";
 import { User } from "../../model/User";
 import jwt from "jsonwebtoken";
 import { logger } from "../../errors/Winston";
+import { AppError } from "../../errors/AppError";
 
 interface IAuthUser {
     email: string;
@@ -13,36 +14,33 @@ export class AuthUserUseCase {
         const user = await User.findOne({ email });
 
         if (!user) {
-            throw new Error("User not found");
+            throw new AppError("User not found", 404);
         }
 
         const checkPassword = await compare(password, user.password);
 
         if (!checkPassword) {
-            throw new Error("Email ou password incorrect");
+            throw new AppError("Email ou password incorrect", 401);
         }
-        try {
-            const secret = process.env.SECRET_KEY;
 
-            const token = jwt.sign(
-                {
-                    id: user._id,
-                },
-                secret,
-                {
-                    expiresIn: "1d",
-                }
-            );
-            logger.info({
-                AuthUserUseCase: {
-                    user: email,
-                    token: token,
-                    status: "User authenticated",
-                },
-            });
-            return { User: user.email, token };
-        } catch (error) {
-            throw new Error("internal server error");
-        }
+        const secret = process.env.SECRET_KEY;
+
+        const token = jwt.sign(
+            {
+                id: user._id,
+            },
+            secret,
+            {
+                expiresIn: "1d",
+            }
+        );
+        logger.info({
+            AuthUserUseCase: {
+                user: email,
+                token: token,
+                status: "User authenticated",
+            },
+        });
+        return { User: user.email, token };
     }
 }
