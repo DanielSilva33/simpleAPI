@@ -8,6 +8,6 @@ export class GithubProfileController {
 
         const result = await githubProfile.execute(username);
 
-        return response.status(200).json(result);
+        return response.json(result);
     }
 }

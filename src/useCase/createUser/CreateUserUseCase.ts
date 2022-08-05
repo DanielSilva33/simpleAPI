@@ -1,3 +1,4 @@
+import { AppError } from "../../errors/AppError";
 import { logger } from "../../errors/Winston";
 import { User } from "../../model/User";
 import { passwordHash } from "../../utils/PasswordHash";
@@ -14,7 +15,7 @@ export class CreateUserUseCase {
         const userAlreadyExists = await User.findOne({ email });
 
         if (userAlreadyExists) {
-            throw new Error("User already exists");
+            throw new AppError("User already exists", 403);
         }
         const passwordhash = await HashPassword.hash(password);
         const createUser = await User.create({
