@@ -15,6 +15,7 @@ export class CreateUserUseCase {
         const userAlreadyExists = await User.findOne({ email });
 
         if (userAlreadyExists) {
+            logger.info("User already exists");
             throw new AppError("User already exists", 403);
         }
         const passwordhash = await HashPassword.hash(password);
@@ -23,7 +24,9 @@ export class CreateUserUseCase {
             email,
             password: passwordhash,
         });
-        logger.info({ CreateUserUseCase: { user: "created" } });
+        logger.info({
+            CreateUserUseCase: { user: "created", name: name, email: email },
+        });
 
         return createUser;
     }
