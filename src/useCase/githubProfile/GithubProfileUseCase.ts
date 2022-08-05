@@ -6,6 +6,7 @@ export class GithubProfileUseCase {
     async execute(username: any) {
         const baseURL = process.env.BASE_URL_GITHUB;
         if (!username) {
+            logger.info("Username required");
             throw new AppError("Username required", 406);
         }
         try {

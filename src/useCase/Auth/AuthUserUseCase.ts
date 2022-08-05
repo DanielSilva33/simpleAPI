@@ -14,12 +14,14 @@ export class AuthUserUseCase {
         const user = await User.findOne({ email });
 
         if (!user) {
+            logger.info("User not found");
             throw new AppError("User not found", 404);
         }
 
         const checkPassword = await compare(password, user.password);
 
         if (!checkPassword) {
+            logger.info("Email ou password incorrect");
             throw new AppError("Email ou password incorrect", 401);
         }
 
