@@ -3,6 +3,7 @@ import { User } from "../../model/User";
 import jwt from "jsonwebtoken";
 import { logger } from "../../errors/Winston";
 import { AppError } from "../../errors/AppError";
+import { validate } from "email-validator";
 
 interface IAuthUser {
     email: string;
@@ -17,10 +18,10 @@ export class AuthUserUseCase {
             logger.info("User not found");
             throw new AppError("User not found", 404);
         }
-
+        const checkEmail = await validate(email);
         const checkPassword = await compare(password, user.password);
 
-        if (!checkPassword) {
+        if (!checkPassword || !checkEmail) {
             logger.info("Email ou password incorrect");
             throw new AppError("Email ou password incorrect", 401);
         }

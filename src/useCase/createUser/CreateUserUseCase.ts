@@ -1,7 +1,8 @@
 import { AppError } from "../../errors/AppError";
 import { logger } from "../../errors/Winston";
 import { User } from "../../model/User";
-import { passwordHash } from "../../utils/PasswordHash";
+import { PasswordHash } from "../../utils/PasswordHash";
+import { validate } from "email-validator";
 
 interface ICreateUser {
     name: string;
@@ -11,18 +12,20 @@ interface ICreateUser {
 
 export class CreateUserUseCase {
     async execute({ name, email, password }: ICreateUser) {
-        const HashPassword = new passwordHash();
+        const passwordHash = new PasswordHash();
         const userAlreadyExists = await User.findOne({ email });
-
+        const checkEmail = await validate(email);
+        if (!checkEmail)
+            throw new AppError("Email or password incorrect!", 406);
         if (userAlreadyExists) {
             logger.info("User already exists");
             throw new AppError("User already exists", 403);
         }
-        const passwordhash = await HashPassword.hash(password);
+        const finalPassword = await passwordHash.hash(password);
         const createUser = await User.create({
             name,
             email,
-            password: passwordhash,
+            password: finalPassword,
         });
         logger.info({
             CreateUserUseCase: { user: "created", name: name, email: email },
