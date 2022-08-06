@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-export class Auth {
+export class AuthUser {
     async execute(request: Request, response: Response, next: NextFunction) {
         const authHeader = request.headers.authorization;
 
@@ -12,7 +12,7 @@ export class Auth {
         }
 
         try {
-            const secret = process.env.SECRET_KEY;
+            const secret = process.env.SECRET_KEY_USER;
 
             jwt.verify(token, secret);
 

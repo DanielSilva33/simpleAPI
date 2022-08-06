@@ -2011,6 +2011,11 @@
   "resolved" "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.203.tgz"
   "version" "1.4.203"
 
+"email-validator@^2.0.4":
+  "integrity" "sha512-gYCwo7kh5S3IDyZPLZf6hSS0MnZT8QmJFqYvbqlDZSbwdZlY6QZWxJ4i/6UhITOJ4XzyI647Bm2MXKCLqnJ4nQ=="
+  "resolved" "https://registry.npmjs.org/email-validator/-/email-validator-2.0.4.tgz"
+  "version" "2.0.4"
+
 "enabled@2.0.x":
   "integrity" "sha512-AKrN98kuwOzMIdAizXGI86UFBoo26CL21UM763y1h/GMSJ4/OHU9k2YlsmBpyScFo/wbLzWQJBMCW4+IO3/+OQ=="
   "resolved" "https://registry.npmjs.org/enabled/-/enabled-2.0.0.tgz"
