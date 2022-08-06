@@ -14,6 +14,7 @@ export class AuthAdminUserUseCase {
     async execute({ email, password }: IAuthAdminUserUseCase) {
         const checkEmail = validate(email);
         if (!checkEmail) throw new AppError("Email ou password incorrect", 401);
+
         const adminUser = await Admin.findOne({ email });
         if (!adminUser) {
             logger.info("User not found");

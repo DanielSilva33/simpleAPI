@@ -12,22 +12,23 @@ interface IAuthUser {
 
 export class AuthUserUseCase {
     async execute({ email, password }: IAuthUser) {
+        const checkEmail = validate(email);
+        if (!checkEmail) throw new AppError("Email ou password incorrect", 401);
         const user = await User.findOne({ email });
 
         if (!user) {
             logger.info("User not found");
             throw new AppError("User not found", 404);
         }
-        const checkEmail = validate(email);
+
         const checkPassword = await compare(password, user.password);
 
-        if (!checkPassword || !checkEmail) {
+        if (!checkPassword) {
             logger.info("Email ou password incorrect");
             throw new AppError("Email ou password incorrect", 401);
         }
 
         const secret = process.env.SECRET_KEY_USER;
-
         const token = jwt.sign(
             {
                 id: user._id,
