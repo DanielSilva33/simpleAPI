@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { logger } from "../../errors/Winston";
+import { logger } from "../../../errors/Winston";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 
 export class CreateUserController {
