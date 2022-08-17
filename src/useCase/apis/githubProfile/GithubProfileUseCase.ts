@@ -1,6 +1,6 @@
 import axios from "axios";
-import { AppError } from "../../errors/AppError";
-import { logger } from "../../errors/Winston";
+import { AppError } from "../../../errors/AppError";
+import { logger } from "../../../errors/Winston";
 
 export class GithubProfileUseCase {
     async execute(username: any) {
