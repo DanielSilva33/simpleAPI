@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { logger } from "../../../errors/Winston";
 import { AppError } from "../../../errors/AppError";
 import { validate } from "email-validator";
+import { getRedis, setRedis } from "../../../database/redis/redisConfig";
 
 interface IAuthUser {
     email: string;
@@ -14,6 +15,17 @@ export class AuthUserUseCase {
     async execute({ email, password }: IAuthUser) {
         const checkEmail = validate(email);
         if (!checkEmail) throw new AppError("Email ou password incorrect", 401);
+        const tokenRedis = await getRedis(`user-${email}`);
+        if (tokenRedis) {
+            logger.info({
+                AuthUserUseCase: {
+                    user: email,
+                    token: tokenRedis,
+                    status: "User authenticated",
+                },
+            });
+            return { User: email, tokenRedis };
+        }
         const user = await User.findOne({ email });
 
         if (!user) {
@@ -38,6 +50,7 @@ export class AuthUserUseCase {
                 expiresIn: "1d",
             }
         );
+        await setRedis(`user-${email}`, `token-${token}`, 86400); //expires in 1 day 86400
         logger.info({
             AuthUserUseCase: {
                 user: email,

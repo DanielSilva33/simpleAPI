@@ -19,6 +19,7 @@
         "email-validator": "^2.0.4",
         "express": "^4.17.1",
         "express-async-errors": "^3.1.1",
+        "ioredis": "^5.2.3",
         "jsonwebtoken": "^8.5.1",
         "moment": "^2.29.4",
         "mongoose": "^6.5.0",
