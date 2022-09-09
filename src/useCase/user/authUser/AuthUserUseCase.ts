@@ -24,7 +24,7 @@ export class AuthUserUseCase {
                     status: "User authenticated",
                 },
             });
-            return { User: email, tokenRedis };
+            return { user: email, token: tokenRedis };
         }
         const user = await User.findOne({ email });
 
@@ -58,6 +58,6 @@ export class AuthUserUseCase {
                 status: "User authenticated",
             },
         });
-        return { User: user.email, token };
+        return { user: user.email, token };
     }
 }
