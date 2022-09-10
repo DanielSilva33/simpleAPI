@@ -13,7 +13,6 @@ export class PokeAPIService {
                     pokemon,
                     url: url,
                     method: response.config.method,
-                    result: response.data,
                 },
             });
 
