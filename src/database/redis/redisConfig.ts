@@ -15,4 +15,4 @@ async function setRedis(key: string, value: string, EX: number) {
     return await redisClient.set(key, value, "EX", EX);
 }
 
-export { redisClient, getRedis, setRedis };
+export { getRedis, setRedis };
