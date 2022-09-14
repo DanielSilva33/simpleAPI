@@ -6,6 +6,7 @@ import { PokeAPIService } from "./PokeAPIService";
 
 export class PokeAPIUseCase {
     async execute(pokemon: string) {
+        const dayInMillisecond = 86400;
         if (!pokemon) {
             logger.info("pokemon required");
             throw new AppError("pokemon required", 406);
@@ -23,7 +24,7 @@ export class PokeAPIUseCase {
         await setRedis(
             `pokemon-${pokemon}`,
             `${JSON.stringify(result)}`,
-            86400
+            dayInMillisecond
         );
         return result;
     }

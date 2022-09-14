@@ -13,6 +13,7 @@ interface IAuthUser {
 
 export class AuthUserUseCase {
     async execute({ email, password }: IAuthUser) {
+        const dayInMillisecond = 86400;
         const checkEmail = validate(email);
         if (!checkEmail) throw new AppError("Email ou password incorrect", 401);
         const tokenRedis = await getRedis(`user-${email}`);
@@ -50,7 +51,7 @@ export class AuthUserUseCase {
                 expiresIn: "1d",
             }
         );
-        await setRedis(`user-${email}`, `token-${token}`, 86400); //expires in 1 day 86400
+        await setRedis(`user-${email}`, `token-${token}`, dayInMillisecond); //expires in 1 day 86400 ms
         logger.info({
             AuthUserUseCase: {
                 user: email,
