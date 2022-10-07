@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { GithubProfileController } from "../../useCase/githubProfile/GithubProfileController";
+import { GithubProfileController } from "../../useCase/apis/githubProfile/GithubProfileController";
 
 const githubProfileRoute = Router();
 
